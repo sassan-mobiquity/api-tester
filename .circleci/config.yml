@@ -18,7 +18,7 @@ jobs:
       #        publish the test reports
       - run:
           name: Compress Artifacts
-          command: tar -cvzf testReport.tar /target
+          command: tar -cvzf testReport.tar target
       - store_artifacts:
           path: testReport.tar
           destination: testReport
