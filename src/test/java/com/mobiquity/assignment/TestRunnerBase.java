@@ -4,12 +4,16 @@ package com.mobiquity.assignment;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
+import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.mobiquity.assignment.RestClientBase.*;
+import static io.restassured.RestAssured.given;
 
 
 @Slf4j
@@ -26,11 +30,18 @@ public class TestRunnerBase extends AbstractTestNGCucumberTests {
         Config envOverrides = ConfigFactory.systemProperties()
                 .withFallback(ConfigFactory.systemEnvironment());
         props = new TestConfig(envOverrides.withFallback(profile).resolve());
+        RestClientBase.init(props);
     }
 
     @Test
     void test() {
         log.info("running api tests against: " + props.getTypicodeURL());
+        Response resp = given().
+                config(requestConfig).
+                queryParam("username", "Delphine").
+                when().
+                get(typicodeURL + usersEndpoint);
+        resp.prettyPrint();
     }
 
 }
