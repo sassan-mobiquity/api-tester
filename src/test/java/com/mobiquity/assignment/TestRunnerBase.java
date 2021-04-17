@@ -6,8 +6,8 @@ import com.typesafe.config.ConfigFactory;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,6 +22,16 @@ public class TestRunnerBase extends AbstractTestNGCucumberTests {
     @BeforeSuite
     public void beforeSuite() {
         config();
+        TestReportGenerator.deleteExistingReportDir();
+        String reportPath = System.getProperty("reportPath") == null ?
+                "target/test-reports-" + timeStamp : System.getProperty("reportPath");
+        TestReportGenerator.setReportPath(reportPath);
+    }
+
+
+    @AfterSuite
+    public void afterSuite() {
+        TestReportGenerator.generate();
     }
 
 
