@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.mobiquity.assignment.RestClientBase.*;
+import static com.mobiquity.assignment.RestClientBase.usersEndpoint;
 import static io.restassured.RestAssured.given;
 
 
@@ -30,17 +30,16 @@ public class TestRunnerBase extends AbstractTestNGCucumberTests {
         Config envOverrides = ConfigFactory.systemProperties()
                 .withFallback(ConfigFactory.systemEnvironment());
         props = new TestConfig(envOverrides.withFallback(profile).resolve());
-        RestClientBase.init(props);
+        RestClientBase.init(props.getDefaultTimeoutMilSec(), props.getTypicodeURL());
     }
 
     @Test
     void test() {
         log.info("running api tests against: " + props.getTypicodeURL());
         Response resp = given().
-                config(requestConfig).
                 queryParam("username", "Delphine").
                 when().
-                get(typicodeURL + usersEndpoint);
+                get(usersEndpoint);
         resp.prettyPrint();
     }
 
