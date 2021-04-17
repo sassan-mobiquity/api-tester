@@ -12,5 +12,6 @@ jobs:
       - checkout
 
 #        run the tests
+      - run: chmod +x gradlew
       - run: ./gradlew clean build
 
