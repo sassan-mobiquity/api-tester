@@ -4,14 +4,14 @@ jobs:
     docker:
       - image: cimg/openjdk:14.0-node
 
-#    you can override the local-config.conf file with environment variables
-#    environment:
+    #    you can override the local-config.conf file with environment variables
+    #    environment:
 
 
     steps:
       - checkout
 
-#        run the tests
+      #        run the tests
       - run: chmod +x gradlew
       - run: ./gradlew clean build
 
